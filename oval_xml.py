@@ -12,7 +12,7 @@ namespace = {
 }
 
 baseurl = 'http://oval.mitre.org/XMLSchema/'
-baserule = baseurl + 'oval_definitions-5'
+baserule = baseurl + 'oval-definitions-5'
 
 advisory_from = 'cpe:/o:rocky:rocky:8:GA'
 publication_date = dt.datetime.now()
@@ -23,7 +23,7 @@ version = {
     'Schema'  : "5.10",
     'Content' : "77986313",
     'Scope'   : "oval:org.rockylinux.rlsa:",
-    'Tag'     : "rocky-def:"
+    'Tag'     : "red-def:"
 }
 
 """ 

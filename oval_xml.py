@@ -12,7 +12,7 @@ namespace = {
 }
 
 baseurl = 'http://oval.mitre.org/XMLSchema/'
-baserule = baseurl + 'oval_definitions-5'
+baserule = baseurl + 'oval-definitions-5'
 
 advisory_from = 'cpe:/o:rocky:rocky:8:GA'
 publication_date = dt.datetime.now()
@@ -23,7 +23,7 @@ version = {
     'Schema'  : "5.10",
     'Content' : "77986313",
     'Scope'   : "oval:org.rockylinux.rlsa:",
-    'Tag'     : "rocky-def:"
+    'Tag'     : "red-def:"
 }
 
 """ 
@@ -53,12 +53,12 @@ def header( version ) :
     xml = '<?xml version="1.0" encoding="utf-8"?>\n' + \
           '<oval_definitions\n' + \
           '    xmlns="' + baserule + '"\n' + \
-          '    xmlns:oval="' + baseurl + '/oval-common-5"\n' + \
+          '    xmlns:oval="' + baseurl + 'oval-common-5"\n' + \
           '    xmlns:unix-def="' + baserule + '#unix"\n' + \
           '    xmlns:red-def="' + baserule + '#linux"\n' + \
           '    xmlns:ind-def="' + baserule + '#independent"\n' + \
           '    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n' + \
-          '    xsi:schemaLocation="' + baseurl + '/oval-common-5 oval-common-schema.xsd ' + \
+          '    xsi:schemaLocation="' + baseurl + 'oval-common-5 oval-common-schema.xsd ' + \
           baserule + ' oval-definitions-schema.xsd ' + \
           baserule + '#unix unix-definitions-schema.xsd ' + \
           baserule + '#linux linux-definitions-schema.xsd">\n'

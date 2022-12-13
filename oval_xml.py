@@ -53,12 +53,12 @@ def header( version ) :
     xml = '<?xml version="1.0" encoding="utf-8"?>\n' + \
           '<oval_definitions\n' + \
           '    xmlns="' + baserule + '"\n' + \
-          '    xmlns:oval="' + baseurl + '/oval-common-5"\n' + \
+          '    xmlns:oval="' + baseurl + 'oval-common-5"\n' + \
           '    xmlns:unix-def="' + baserule + '#unix"\n' + \
           '    xmlns:red-def="' + baserule + '#linux"\n' + \
           '    xmlns:ind-def="' + baserule + '#independent"\n' + \
           '    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n' + \
-          '    xsi:schemaLocation="' + baseurl + '/oval-common-5 oval-common-schema.xsd ' + \
+          '    xsi:schemaLocation="' + baseurl + 'oval-common-5 oval-common-schema.xsd ' + \
           baserule + ' oval-definitions-schema.xsd ' + \
           baserule + '#unix unix-definitions-schema.xsd ' + \
           baserule + '#linux linux-definitions-schema.xsd">\n'

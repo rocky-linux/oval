@@ -184,44 +184,10 @@ def generate_default( tests, objects, states, base_id ) :
             'id'      : base_id + str(len( tests ) + 1).zfill( 3 ),
             'version' : transform_version[ 'Test' ],
             'comment' : "Rocky Linux must be installed",
-            'check'   : "none_satisfy",
+            'check'   : "none satisfy",
             'oid'     : base_id + str(len( objects ) + 1).zfill( 3 ),
             'sids'    : [ base_id + str(len( states ) + 1).zfill( 3 ) ]
         } 
-    )
-
-    # Add regex object here (rpmverifyfile_object)
-    objects.append(
-        {
-            'type'     : "rpmverifyfile",
-            'id'       : base_id + str(len( objects ) + 1).zfill( 3 ),
-            'version'  : transform_version[ 'Object' ],
-            'contents' : [                            
-                {
-                    'name'      : "behaviors",
-                    'pairs'     : [ 
-                        { 'name' : "noconfigfiles", 'value' : "true" },
-                        { 'name' : "nohostfiles", 'value' : "true" },
-                        { 'name' : "nogroup", 'value' : "true" },
-                        { 'name' : "nolinkto", 'value' : "true" },
-                        { 'name' : "nomd5", 'value' : "true" },
-                        { 'name' : "nomode", 'value' : "true" },
-                        { 'name' : "notime", 'value' : "true" },
-                        { 'name' : "nordev", 'value' : "true" },
-                        { 'name' : "nosize", 'value' : "true" },
-                        { 'name' : "nouser", 'value' : "true" }
-                    ],
-                    'operation' : "",
-                    'value'     : ""
-                },
-                { 'name' : "name", 'pairs' : "", 'operation' : "pattern match", 'value' : "" },
-                { 'name' : "epoch", 'pairs' : "", 'operation' : "pattern match", 'value' : "" },
-                { 'name' : "version", 'pairs' : "", 'operation' : "pattern match", 'value' : "" },
-                { 'name' : "release", 'pairs' : "", 'operation' : "pattern match", 'value' : "" },
-                { 'name' : "arch", 'pairs' : "", 'operation' : "pattern match", 'value' : "" },
-                { 'name' : "filepath", 'pairs' : "", 'operation' : "pattern match", 'value' : "" }
-            ]
-        }
     )
 
     # Add regex state here (rpmverifyfile_state)
@@ -249,7 +215,7 @@ def generate_default( tests, objects, states, base_id ) :
             'id'      : base_id + str(len( tests ) + 1).zfill( 3 ),
             'version' : transform_version[ 'Test' ],
             'comment' : "Rocky Linux 8 must be installed",
-            'check'   : "at_least_one",
+            'check'   : "at least one",
             'oid'     : base_id + str(len( objects ) + 1).zfill( 3 ),
             'sids'    : [ base_id + str(len( states ) + 1).zfill( 3 ) ]
         } 
@@ -275,6 +241,40 @@ def generate_default( tests, objects, states, base_id ) :
                     'operation' : "pattern match", 
                     'value'     : "^8[^\d]" 
                 }
+            ]
+        }
+    )
+
+    # Add regex object here (rpmverifyfile_object)
+    objects.append(
+        {
+            'type'     : "rpmverifyfile",
+            'id'       : base_id + str(len( objects ) + 1).zfill( 3 ),
+            'version'  : transform_version[ 'Object' ],
+            'contents' : [
+                {
+                    'name'      : "behaviors",
+                    'pairs'     : [
+                        { 'name' : "noconfigfiles", 'value' : "true" },
+                        { 'name' : "noghostfiles", 'value' : "true" },
+                        { 'name' : "nogroup", 'value' : "true" },
+                        { 'name' : "nolinkto", 'value' : "true" },
+                        { 'name' : "nomd5", 'value' : "true" },
+                        { 'name' : "nomode", 'value' : "true" },
+                        { 'name' : "nomtime", 'value' : "true" },
+                        { 'name' : "nordev", 'value' : "true" },
+                        { 'name' : "nosize", 'value' : "true" },
+                        { 'name' : "nouser", 'value' : "true" }
+                    ],
+                    'operation' : "",
+                    'value'     : ""
+                },
+                { 'name' : "name", 'pairs' : "", 'operation' : "pattern match", 'value' : "" },
+                { 'name' : "epoch", 'pairs' : "", 'operation' : "pattern match", 'value' : "" },
+                { 'name' : "version", 'pairs' : "", 'operation' : "pattern match", 'value' : "" },
+                { 'name' : "release", 'pairs' : "", 'operation' : "pattern match", 'value' : "" },
+                { 'name' : "arch", 'pairs' : "", 'operation' : "pattern match", 'value' : "" },
+                { 'name' : "filepath", 'pairs' : "", 'operation' : "pattern match", 'value' : "" }
             ]
         }
     )

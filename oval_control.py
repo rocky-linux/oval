@@ -23,7 +23,7 @@ An advisory record has the following structure:
 
 # base API for gathering advisories
 baseapi = "https://apollo.build.resf.org/v2"
-basefilter = "/advisories?filters.type=TYPE_SECURITY&includeRpms=true"
+basefilter = "/advisories?filters.type=TYPE_SECURITY&filters.includeRpms=true"
 
 # used to limit the total advisories for testing
 page_limit = 1000

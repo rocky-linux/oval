@@ -1,3 +1,4 @@
+import time
 import datetime as dt
 
 
@@ -15,13 +16,12 @@ baseurl = 'http://oval.mitre.org/XMLSchema/'
 baserule = baseurl + 'oval-definitions-5'
 
 advisory_from = 'cpe:/o:rocky:rocky:8:GA'
-publication_date = dt.datetime.now()
+publication_date = dt.datetime.utcnow()
 copyright = 'Copyright ' + str( publication_date.year ) + ' CIQ, Inc.'
 
 version = {
     'Product' : "1",
     'Schema'  : "5.10",
-    'Content' : "77986313",
     'Scope'   : "oval:org.rockylinux.rlsa:",
     'Tag'     : "red-def:"
 }
@@ -68,8 +68,8 @@ def header( version ) :
           '<oval:product_name>Rocky OVAL Patch Definition Merger</oval:product_name>\n' + \
           '<oval:product_version>' + version[ "Product" ] + '</oval:product_version>\n' + \
           '<oval:schema_version>' + version[ "Schema" ] + '</oval:schema_version>\n' + \
-          '<oval:timestamp>' + dt.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S") + '</oval:timestamp>\n' + \
-          '<oval:content_version>' + version[ "Content" ] + '</oval:content_version>\n' + \
+          '<oval:timestamp>' + publication_date.strftime( "%Y-%m-%dT%H:%M:%S" ) + '</oval:timestamp>\n' + \
+          '<oval:content_version>' + str( int( time.mktime( publication_date.timetuple( ) ) ) ) + '</oval:content_version>\n' + \
           '</generator>'
 
     return xml

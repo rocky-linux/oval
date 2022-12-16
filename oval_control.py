@@ -26,7 +26,7 @@ baseapi = "https://apollo.build.resf.org/v2"
 basefilter = "/advisories?filters.type=TYPE_SECURITY&filters.includeRpms=true"
 
 # used to limit the total advisories for testing
-page_limit = 1000
+page_limit = 2000
 per_rq_limit = 100
 
 def ingest( ) :

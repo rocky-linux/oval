@@ -15,9 +15,8 @@ namespace = {
 baseurl = 'http://oval.mitre.org/XMLSchema/'
 baserule = baseurl + 'oval-definitions-5'
 
-advisory_from = 'cpe:/o:rocky:rocky:8:GA'
 publication_date = dt.datetime.utcnow()
-copyright = 'Copyright ' + str( publication_date.year ) + ' CIQ, Inc.'
+copyright = 'Copyright ' + str( publication_date.year ) + ' Rocky Enterprise Software Foundation, Inc.'
 
 version = {
     'Product' : "1",
@@ -101,7 +100,7 @@ def definition( scope, did, dversion, dclass, metadata, criteria ) :
 
 
 def metadata( title, family, platforms, ref_id, source, references, description, 
-    severity, issued, updated, cpes ) :
+    severity, issued, updated, cpes, rl_version ) :
     """
     metadata element contains information about the definition but
     does not affect evaluation of the definition
@@ -132,7 +131,7 @@ def metadata( title, family, platforms, ref_id, source, references, description,
           '    <description>' + description + '</description>\n'
 
     xml = xml + \
-          '    <advisory from="' + advisory_from + '">\n' + \
+          '    <advisory from="cpe:/o:rocky:rocky:' + str( rl_version ) + ':GA">\n' + \
           '      <severity>' + severity + '</severity>\n' + \
           '      <rights>' + copyright + '</rights>\n' + \
           '      <issued date="' + issued + '"/>\n' + \

@@ -29,7 +29,7 @@ basefilter = "/advisories?filters.type=TYPE_SECURITY&filters.includeRpms=true"
 page_limit = 2000
 per_rq_limit = 100
 
-def ingest( ) :
+def ingest( rl_version ) :
     """
     ingest advisories from API as list of JSON strings
     """
@@ -39,8 +39,9 @@ def ingest( ) :
     page = 1
     while True :
 
-        advisory_items = rq.get( baseapi + basefilter + "&page=" + \
-            str( page ) + "&limit=" + str( per_rq_limit ) ).json( )
+        productfilter = "&product=Rocky%20Linux%20" + str( rl_version )
+        advisory_items = rq.get( baseapi + basefilter + productfilter +
+            "&page=" + str( page ) + "&limit=" + str( per_rq_limit ) ).json( )
         if advisory_items[ 'advisories' ] == [ ] or page > page_limit :
             break
  
@@ -76,18 +77,19 @@ def filter( advisories ) :
     filter all advisories from a dataframe other than security type
     """
 
-    return advisories[ advisories[ 'type' ] == 'TYPE_SECURITY' ]
+    return advisories[ advisories[ 'type' ] == "TYPE_SECURITY" ]
 
 
-def transform( advisories ) :
+
+def transform( advisories, rl_version ) :
     """
     transform advisories into definitions, tests, objects and states
     """
 
     # create a high-level definition for each advisory
-    definitions = xfrm.definitions( advisories )
+    definitions = xfrm.definitions( advisories, rl_version )
 
     # generate tests, objects and states from each high-level definition
-    tests, objects, states = xfrm.generate( definitions )
+    tests, objects, states = xfrm.generate( definitions, rl_version )
 
     return definitions, tests, objects, states

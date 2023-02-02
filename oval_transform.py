@@ -120,7 +120,7 @@ def references( cves, fixes, impact, public ) :
     return references
 
 
-def definitions( advisories ) :
+def definitions( advisories, rl_version ) :
     """
     walk the list of advisories and generate definitions which contain
     metadata and criteria (the later of which are used to create tests)
@@ -168,14 +168,14 @@ def definitions( advisories ) :
                 'ref_id'      : advisory[ 'name' ],
                 'source'      : advisory[ 'name' ].split( '-' )[ 0 ],
                 'references'  : refs,
-                'cpes'        : [ "cpe:/a:rocky:linux:8" ],
+                'cpes'        : [ "cpe:/a:rocky:linux:" + str( rl_version ) ],
                 'criteria'    : crits
             }
         )
     
     return definitions
 
-def generate_default( tests, objects, states, base_id ) :
+def generate_default( tests, objects, states, base_id, rl_version ) :
 
     # Rocky Linux check
     tests.append( 
@@ -214,7 +214,7 @@ def generate_default( tests, objects, states, base_id ) :
             'type'    : "rpmverifyfile",
             'id'      : base_id + str(len( tests ) + 1).zfill( 3 ),
             'version' : transform_version[ 'Test' ],
-            'comment' : "Rocky Linux 8 must be installed",
+            'comment' : "Rocky Linux " + str( rl_version ) +" must be installed",
             'check'   : "at least one",
             'oid'     : base_id + str(len( objects ) + 1).zfill( 3 ),
             'sids'    : [ base_id + str(len( states ) + 1).zfill( 3 ) ]
@@ -227,7 +227,7 @@ def generate_default( tests, objects, states, base_id ) :
             'type'     : "rpmverifyfile",
             'id'       : base_id + str(len( states ) + 1).zfill( 3 ),
             'version'  : transform_version[ 'State' ],
-            'product'  : "rockyrelease-8",
+            'product'  : "rockyrelease-" + str( rl_version ),
             'contents' : [ 
                 { 
                     'name'      : "name",
@@ -239,7 +239,7 @@ def generate_default( tests, objects, states, base_id ) :
                     'name'      : "version",
                     'type'      : "", 
                     'operation' : "pattern match", 
-                    'value'     : "^8[^\d]" 
+                    'value'     : "^" + str( rl_version ) + "[^\d]" 
                 }
             ]
         }
@@ -280,7 +280,7 @@ def generate_default( tests, objects, states, base_id ) :
     )
 
 
-def generate( definitions ) :
+def generate( definitions, rl_version ) :
     """
     walk through the criterias contained in the definitions and
     generate tests, objects and states for each case 
@@ -299,7 +299,7 @@ def generate( definitions ) :
 
         # generate default base level content
         if len( tests ) == 0 :
-            generate_default( tests, objects, states, base_id )
+            generate_default( tests, objects, states, base_id, rl_version )
 
         # walk the criterias to create additional tests, objects and states
         for criteria in definition[ 'criteria' ] :

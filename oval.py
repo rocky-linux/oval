@@ -1,8 +1,9 @@
 import oval_xml as xml
 import oval_control as ctrl
 
+import sys
 
-def output( definitions, tests, objects, states ) :
+def output( definitions, tests, objects, states, rl_version ) :
     """
     output to OVAL XML content based on transformed content
     with definitions section followed by tests, objects, states
@@ -19,7 +20,7 @@ def output( definitions, tests, objects, states ) :
             definition[ 'title' ], definition[ 'family' ], definition[ 'platform' ],
             definition[ 'ref_id' ], definition[ 'source' ], definition[ 'references' ], 
             definition[ 'description' ], definition[ 'severity' ], definition[ 'issued' ], 
-            definition[ 'updated' ], definition[ 'cpes']
+            definition[ 'updated' ], definition[ 'cpes'], rl_version
         )
 
         criteria_output = xml.criteria( 
@@ -71,14 +72,14 @@ def output( definitions, tests, objects, states ) :
     print( xml.footer( ) )
 
 
-def pipeline( test_local = False ) :
+def pipeline( rl_version ) :
     """
     pipeline for gathering advisories, normalizing and filtering followed
     by transforming and XML output
     """
 
     # ingest advisory information from API as list of JSON strings
-    alist = ctrl.ingest( )
+    alist = ctrl.ingest( rl_version )
 
     # normalize JSON strings to dataframes
     advisories = ctrl.normalize( alist )
@@ -87,10 +88,10 @@ def pipeline( test_local = False ) :
     advisories = ctrl.filter( advisories )
 
     # transform to OVAL types
-    definitions, tests, objects, states = ctrl.transform( advisories )
+    definitions, tests, objects, states = ctrl.transform( advisories, rl_version )
 
     # output to OVAL XML content
-    output( definitions, tests, objects, states )
+    output( definitions, tests, objects, states, rl_version )
 
 
 """
@@ -103,8 +104,14 @@ def main( ):
     run the pipeline to generate OVAL XML output based on current advisories
     """
     
+    # get command line argument for version of rocky linux
+    if len(sys.argv) > 1 :
+        rl_version = int( sys.argv[1] )
+    else :
+        rl_version = 8
+
     # pipeline conversion from JSON ingest to OVAL XML output
-    pipeline( )
+    pipeline( rl_version )
 
 
 if __name__ == "__main__":

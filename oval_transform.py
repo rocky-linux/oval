@@ -208,7 +208,7 @@ def generate_default( tests, objects, states, base_id, rl_version ) :
         }
     )
 
-    # Rocky Linux 8 check
+    # Rocky Linux version check
     tests.append( 
         {
             'type'    : "rpmverifyfile",

@@ -39,7 +39,7 @@ def ingest( rl_version ) :
     page = 1
     while True :
 
-        productfilter = "&product=Rocky%20Linux%20" + str( rl_version )
+        productfilter = "&filters.product=Rocky%20Linux%20" + str( rl_version )
         advisory_items = rq.get( baseapi + basefilter + productfilter +
             "&page=" + str( page ) + "&limit=" + str( per_rq_limit ) ).json( )
         if advisory_items[ 'advisories' ] == [ ] or page > page_limit :

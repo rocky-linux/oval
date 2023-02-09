@@ -305,7 +305,7 @@ def generate( definitions, rl_version ) :
         for criteria in definition[ 'criteria' ] :
 
             # decompose the evr components
-            evr = re.search( r'(.*/)*(.*)-(.*-.*?.el8.*)\.(.*)(\.rpm)', criteria[ 'comment' ] )
+            evr = re.search( r'(.*/)*(.*)-(.*-.*?.el?.*)\.(.*)(\.rpm)', criteria[ 'comment' ] )
             if evr :
                 (_, product, version, platform, _) = evr.groups( )
 

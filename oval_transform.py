@@ -305,15 +305,16 @@ def generate( definitions, rl_version ) :
         for criteria in definition[ 'criteria' ] :
 
             # decompose the evr components
-            evr = re.search( r'(.*/)*(.*)-(.*-.*?.el?.*)\.(.*)(\.rpm)', criteria[ 'comment' ] )
-            if evr :
-                (_, product, version, platform, _) = evr.groups( )
-
+            nevra = re.search( r"^(\S+)-(?:(\d)+:)([\w~%.+]+)-(\w+(?:\.[\w~%+]+)+?)(?:\.(\w+))?(?:\.rpm)?$", criteria[ 'comment' ] )
+            if nevra :
+                (product, epoch, version, release, platform) = nevra.groups( )
+                evr = epoch + ':' + version + '-' + release
+                
                 # replace comment with message below
                 if criteria[ 'operator' ] != "" :
-                    criteria[ 'comment' ] = product + " is earlier than " + version
+                    criteria[ 'comment' ] = product + " is earlier than " + evr
                 else :
-                    criteria[ 'comment' ] = product + " is signed with Rocky Linux rockyrelease2 key"
+                    criteria[ 'comment' ] = product + "-" + evr + " is signed with Rocky Linux rockyrelease2 key"
 
                 # look for existing test
                 tid = ""
@@ -336,8 +337,8 @@ def generate( definitions, rl_version ) :
                     if state[ 'product' ].split( ' ' )[ 0 ] == product :
                         sid = state[ 'id' ]
                         for item in state[ 'contents' ] :
-                            if item[ 'name' ] == "evr" and item[ 'value' ] < version :
-                                item[ 'value' ] = version
+                            if item[ 'name' ] == "evr" and item[ 'value' ] < evr :
+                                item[ 'value' ] = evr
                         break
 
                 # create new object if none was found
@@ -379,7 +380,7 @@ def generate( definitions, rl_version ) :
                                     'name'      : "evr", 
                                     'type'      : "evr_string", 
                                     'operation' : "less than",
-                                    'value'     : version
+                                    'value'     : evr
                                 }
                             ]
                         }

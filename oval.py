@@ -108,7 +108,7 @@ def main( ):
     if len(sys.argv) > 1 :
         rl_version = int( sys.argv[1] )
     else :
-        rl_version = 8
+        rl_version = 9
 
     # pipeline conversion from JSON ingest to OVAL XML output
     pipeline( rl_version )

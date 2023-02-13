@@ -2,17 +2,17 @@ import oval_transform as oval
 import pandas as pd
 
 
-def unit_test_definitions( advisories ) :
+def unit_test_definitions( advisories, rl_version ) :
     
-    return oval.definitions( advisories )
+    return oval.definitions( advisories, rl_version )
 
 
-def unit_test_generate( definitions ) :
+def unit_test_generate( definitions, rl_version ) :
 
-    return oval.generate( definitions )
+    return oval.generate( definitions, rl_version )
 
 
-def unit_test( ) :
+def unit_test( rl_version ) :
 
     advisory = {
         'type': 'TYPE_SECURITY', 
@@ -111,10 +111,10 @@ def unit_test( ) :
 
     advisories = pd.json_normalize( advisory )
 
-    definitions = unit_test_definitions( advisories )
+    definitions = unit_test_definitions( advisories, rl_version )
     trfm = str( definitions )
 
-    tests, objects, states = unit_test_generate( definitions )
+    tests, objects, states = unit_test_generate( definitions, rl_version )
     trfm = trfm + str( tests )
     trfm = trfm + str( objects )
     trfm = trfm + str( states )
@@ -124,7 +124,8 @@ def unit_test( ) :
     
 def main( ):
 
-    print( unit_test() )
+    rl_version = 8
+    print( unit_test( rl_version ) )
 
 
 if __name__ == "__main__":

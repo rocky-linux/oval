@@ -85,6 +85,7 @@ def references( cves, fixes, impact, public ) :
         description = description.replace( '<', "&lt;" )
         description = description.replace( '>', "&gt;" )
         description = description.replace( '"', "&quot;")
+        description = description.replace( '&', "&amp;")
 
         bugs.append( 
             {
@@ -155,6 +156,12 @@ def definitions( advisories, rl_version ) :
             id = reference[ 'bugdesc' ].split( ' ' )[ 0 ]
             desc = reference[ 'bugdesc' ].replace( id, '' )
             description = description + '*' + desc + '. (' + id + ')\n\n'
+
+        # clean any symbols in description
+        description = description.replace( '&', "&amp;")
+        description = description.replace( '<', "&lt;" )
+        description = description.replace( '>', "&gt;" )
+        description = description.replace( '"', "&quot;")
 
         # create definition
         definitions.append( 

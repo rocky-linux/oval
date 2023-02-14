@@ -10,7 +10,7 @@ transform_version = {
     'State'      : "1"
 }
 
-def criterias( nvras, product ) :
+def criterias( nvras, product, rl_version ) :
     """
     walk the nvras and create criterias which will be linked to
     tests, objects and states later in the processing chain
@@ -26,7 +26,8 @@ def criterias( nvras, product ) :
                 'operator' : "OR",
                 'comment'  : "Rocky Linux must be installed",
                 'id'       : "",
-                'nested'   : True
+                'nested'   : True,
+                'version'  : rl_version
             }
         )
 
@@ -40,7 +41,8 @@ def criterias( nvras, product ) :
                 'operator' : "AND",
                 'comment'  : nvra,
                 'id'       : "",
-                'nested'   : False
+                'nested'   : False,
+                'version'  : rl_version
             }
         )
 
@@ -50,7 +52,8 @@ def criterias( nvras, product ) :
                 'operator' : "",
                 'comment'  : nvra,
                 'id'       : "",
-                'nested'   : False
+                'nested'   : False,
+                'version'  : rl_version
             }
         )
 
@@ -60,7 +63,8 @@ def criterias( nvras, product ) :
             'operator' : "OR",
             'comment'  : product + " must be installed",
             'id'       : "",
-            'nested'   : False
+            'nested'   : False,
+            'version'  : rl_version
         }
     )
  
@@ -81,6 +85,7 @@ def references( cves, fixes, impact, public ) :
         description = description.replace( '<', "&lt;" )
         description = description.replace( '>', "&gt;" )
         description = description.replace( '"', "&quot;")
+        description = description.replace( '&', "&amp;")
 
         bugs.append( 
             {
@@ -137,9 +142,9 @@ def definitions( advisories, rl_version ) :
         issued = advisory[ 'publishedAt' ].split( 'T' )[ 0 ]
 
         # create criterias
-        crits = criterias( [ ], "" ) # base criteria for all Rocky Linux products
+        crits = criterias( [ ], "", rl_version ) # base criteria for all Rocky Linux products
         for product in advisory[ 'affectedProducts' ] :
-            crits = crits + criterias( advisory[ 'rpms.' + product + '.nvras' ], product )
+            crits = crits + criterias( advisory[ 'rpms.' + product + '.nvras' ], product, rl_version )
 
         description = \
             advisory[ 'description' ].replace( '\n', '\n\n' ) + \
@@ -151,6 +156,12 @@ def definitions( advisories, rl_version ) :
             id = reference[ 'bugdesc' ].split( ' ' )[ 0 ]
             desc = reference[ 'bugdesc' ].replace( id, '' )
             description = description + '*' + desc + '. (' + id + ')\n\n'
+
+        # clean any symbols in description
+        description = description.replace( '&', "&amp;")
+        description = description.replace( '<', "&lt;" )
+        description = description.replace( '>', "&gt;" )
+        description = description.replace( '"', "&quot;")
 
         # create definition
         definitions.append( 
@@ -314,7 +325,8 @@ def generate( definitions, rl_version ) :
                 if criteria[ 'operator' ] != "" :
                     criteria[ 'comment' ] = product + " is earlier than " + evr
                 else :
-                    criteria[ 'comment' ] = product + "-" + evr + " is signed with Rocky Linux rockyrelease2 key"
+                    criteria[ 'comment' ] = product + " is signed with Rocky Linux rockyrelease2 key"
+                    criteria[ 'version' ] = evr
 
                 # look for existing test
                 tid = ""

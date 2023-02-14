@@ -315,7 +315,7 @@ def generate( definitions, rl_version ) :
                 evr = epoch + ':' + version + '-' + release
                 
                 # replace comment with message below
-                if criteria[ 'operator' ] != "sign" :
+                if criteria[ 'operator' ] != "" :
                     criteria[ 'comment' ] = product + " is earlier than " + evr
                 else :
                     criteria[ 'comment' ] = product + " is signed with Rocky Linux rockyrelease2 key"

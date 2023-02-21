@@ -33,6 +33,20 @@ version = {
     OVAL criteria describes an assertion to be satisfied
 """
 
+def escape( description ) :
+    """
+    escape special characters from description string
+    """
+
+    # clean any symbols in description
+    description = description.replace( '&', "&amp;")
+    description = description.replace( '<', "&lt;" )
+    description = description.replace( '>', "&gt;" )
+    description = description.replace( '"', "&quot;")
+    
+    return description
+
+
 def section( name, close = False ) :
     """
     section tag helper for open or close
@@ -128,7 +142,7 @@ def metadata( title, family, platforms, ref_id, source, references, description,
                   reference[ 'url' ] + '" source="' + reference[ 'source' ] + '"/>\n'
 
     xml = xml + \
-          '    <description>' + description + '</description>\n'
+          '    <description>' + escape( description ) + '</description>\n'
 
     xml = xml + \
           '    <advisory from="cpe:/o:rocky:rocky:' + str( rl_version ) + ':GA">\n' + \

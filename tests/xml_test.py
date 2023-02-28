@@ -1,4 +1,4 @@
-import oval_xml as oval
+import oval.xml as oval
 
 
 def unit_test_header( ) :

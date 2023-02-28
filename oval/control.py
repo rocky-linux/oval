@@ -1,8 +1,6 @@
-import oval_transform as xfrm
-import requests as rq
-import pandas as pd
-
 """
+OVAL Control
+
 An advisory record has the following structure:
 	type                     str
 	shortCode                str
@@ -21,38 +19,43 @@ An advisory record has the following structure:
 	rpms_Rocky_Linux_8_nvras []str
 """
 
+import requests as rq
+import pandas as pd
+
+from oval import transform as xfrm
+
 # base API for gathering advisories
-baseapi = "https://apollo.build.resf.org/v2"
-basefilter = "/advisories?filters.type=TYPE_SECURITY&filters.includeRpms=true"
+BASEAPI = "https://apollo.build.resf.org/v2"
+BASEFILTER = "/advisories?filters.type=TYPE_SECURITY&filters.includeRpms=true"
 
 # used to limit the total advisories for testing
-page_limit = 2000
-per_rq_limit = 100
+PAGE_LIMIT = 2000
+PER_RQ_LIMIT = 100
+PER_RQ_TIMEOUT = 2000 # ms
 
 def ingest( rl_version ) :
     """
     ingest advisories from API as list of JSON strings
     """
 
-    alist = [ ]
-
+    alist = []
     page = 1
-    while True :
+    while True:
+        product_filter = f"&filters.product=Rocky%20Linux%20{rl_version}"
+        url = f"{BASEAPI}{BASEFILTER}{product_filter}&page={page}&limit={PER_RQ_LIMIT}"
 
-        productfilter = "&filters.product=Rocky%20Linux%20" + str( rl_version )
-        advisory_items = rq.get( baseapi + basefilter + productfilter +
-            "&page=" + str( page ) + "&limit=" + str( per_rq_limit ) ).json( )
-        if advisory_items[ 'advisories' ] == [ ] or page > page_limit :
+        advisory_items = rq.get(url, timeout=PER_RQ_TIMEOUT).json()
+
+        if not advisory_items['advisories'] or page > PAGE_LIMIT:
             break
- 
-        for a in advisory_items.get( "advisories" ) :
-            advisory = rq.get( baseapi + "/advisories/" + a.get( "name" ) ).json( )
-            alist.append( advisory )
 
-        page = page + 1
+        for advisory_item in advisory_items['advisories']:
+            url = f"{BASEAPI}/advisories/{advisory_item['name']}"
+            advisory = rq.get(url, timeout=PER_RQ_TIMEOUT).json()
+            alist.append(advisory)
 
+        page += 1
     return alist
-
 
 def normalize( alist ) :
     """
@@ -70,7 +73,6 @@ def normalize( alist ) :
         advisories = pd.concat( [ advisories, advisory ], ignore_index = True )
 
     return advisories
-
 
 def filter( advisories ) :
     """

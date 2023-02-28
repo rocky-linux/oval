@@ -1,9 +1,8 @@
 import time
 import datetime as dt
 
-
-namespace = { 
-    'Common'          : 'oval', 
+namespace = {
+    'Common'          : 'oval',
     'Definitions'     : 'oval-def',
     'Results'         : 'oval-res',
     'Variables'       : 'oval-var',

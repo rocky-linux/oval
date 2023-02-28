@@ -1,4 +1,4 @@
-import oval_control as oval
+import oval.oval_control as oval
 
 
 def unit_test_ingest( rl_version ) :

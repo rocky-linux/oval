@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "oval"
+version = "0.1.0"
+description = "ETL script for extracting security advisories, transforming content, and exporting it to OVAL-compliant XML"
+authors = ["Neil Hanlon <neil@rockylinux.org>"]
+license = "BSD-3"
+readme = "README.md"
+include = ["oval"]
+
+[tool.poetry.dependencies]
+python = ">=3.6.8,<4"
+pandas = "~1.1.5"
+requests = "~2.27.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+oval = "oval.oval:main"

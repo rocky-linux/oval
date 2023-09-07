@@ -129,6 +129,10 @@ def definitions( advisories, rl_version ) :
     advisories.reset_index( )
     for _, advisory in advisories.iterrows( ) :
 
+        # filtering out non-RLSA types (following addition of RXSA)
+        if advisory[ 'name' ].split( '-' )[ 0 ] != "RLSA" :
+            continue
+
         severity = advisory[ 'synopsis' ].split( ':' )[ 0 ]
         issued = advisory[ 'publishedAt' ].split( 'T' )[ 0 ]
 

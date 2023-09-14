@@ -3,6 +3,7 @@ ETL script for extracting security advisories, transforming content,
 and exporting it to OVAL compliant XML.
 """
 import sys
+import argparse
 
 from oval import control as ctrl
 from oval import xml
@@ -106,7 +107,7 @@ def output(definitions, tests, objects, states, rl_version):
     print(xml.footer())
 
 
-def pipeline(rl_version):
+def pipeline(rl_version, sa_type):
     """
     pipeline for gathering advisories, normalizing and filtering followed
     by transforming and XML output
@@ -122,7 +123,7 @@ def pipeline(rl_version):
     advisories = ctrl.filter(advisories)
 
     # transform to OVAL types
-    definitions, tests, objects, states = ctrl.transform(advisories, rl_version)
+    definitions, tests, objects, states = ctrl.transform(advisories, rl_version, sa_type)
 
     # output to OVAL XML content
     output(definitions, tests, objects, states, rl_version)
@@ -136,14 +137,14 @@ def main():
     @TODO - add error handling to stderr
     """
 
-    # get command line argument for version of rocky linux
-    if len(sys.argv) > 1:
-        rl_version = int(sys.argv[1])
-    else:
-        rl_version = 9
+    # get command line arguments for version of rocky linux and security advisory type
+    parser = argparse.ArgumentParser(description='Configuration parameters')
+    parser.add_argument('--rl_version', type=int, required=False, default=9, help='rocky linux version')
+    parser.add_argument('--sa_type', type=str, required=False, default='RLSA', help='security advisory type')
+    args = parser.parse_args()
 
     # pipeline conversion from JSON ingest to OVAL XML output
-    pipeline(rl_version)
+    pipeline(args.rl_version, args.sa_type)
 
 
 if __name__ == "__main__":

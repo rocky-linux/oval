@@ -83,13 +83,13 @@ def filter( advisories ) :
 
 
 
-def transform( advisories, rl_version ) :
+def transform( advisories, rl_version, sa_type ) :
     """
     transform advisories into definitions, tests, objects and states
     """
 
     # create a high-level definition for each advisory
-    definitions = xfrm.definitions( advisories, rl_version )
+    definitions = xfrm.definitions( advisories, rl_version, sa_type )
 
     # generate tests, objects and states from each high-level definition
     tests, objects, states = xfrm.generate( definitions, rl_version )

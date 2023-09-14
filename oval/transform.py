@@ -116,7 +116,7 @@ def references( cves, fixes, impact, public ) :
     return references
 
 
-def definitions( advisories, rl_version ) :
+def definitions( advisories, rl_version, sa_type ) :
     """
     walk the list of advisories and generate definitions which contain
     metadata and criteria (the later of which are used to create tests)
@@ -129,8 +129,8 @@ def definitions( advisories, rl_version ) :
     advisories.reset_index( )
     for _, advisory in advisories.iterrows( ) :
 
-        # filtering out non-RLSA types (following addition of RXSA)
-        if advisory[ 'name' ].split( '-' )[ 0 ] != "RLSA" :
+        # filtering out non-sa types (following addition of RXSA)
+        if advisory[ 'name' ].split( '-' )[ 0 ] != sa_type :
             continue
 
         severity = advisory[ 'synopsis' ].split( ':' )[ 0 ]
@@ -155,7 +155,7 @@ def definitions( advisories, rl_version ) :
         # create definition
         definitions.append( 
             { 
-                'id'          : advisory[ 'name' ].split( 'RLSA-' )[ 1 ].replace( ':', '' ), 
+                'id'          : advisory[ 'name' ].split( sa_type + '-' )[ 1 ].replace( ':', '' ), 
                 'version'     : transform_version[ 'Definition' ],
                 'title'       : advisory[ 'name' ] + ':'  + advisory[ 'synopsis' ].split( ':' )[ 1 ] + ' (' +  severity + ')',
                 'severity'    : severity,

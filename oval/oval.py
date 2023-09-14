@@ -9,7 +9,7 @@ from oval import control as ctrl
 from oval import xml
 
 
-def output(definitions, tests, objects, states, rl_version):
+def output(definitions, tests, objects, states, rl_version, sa_type):
     """
     output to OVAL XML content based on transformed content
     with definitions section followed by tests, objects, states
@@ -36,12 +36,12 @@ def output(definitions, tests, objects, states, rl_version):
             rl_version,
         )
 
-        criteria_output = xml.criteria(xml.version["Scope"], definition["criteria"])
+        criteria_output = xml.criteria(xml.version["Scope"].lower(), definition["criteria"])
 
         # definition content
         print(
             xml.definition(
-                xml.version["Scope"],
+                xml.version["Scope"].lower()+":",
                 definition["id"],
                 definition["version"],
                 definition["class"],
@@ -58,7 +58,7 @@ def output(definitions, tests, objects, states, rl_version):
         print(
             xml.test(
                 xml.version["Tag"],
-                xml.version["Scope"],
+                xml.version["Scope"].lower()+":",
                 test["type"],
                 test["id"],
                 test["version"],
@@ -77,7 +77,7 @@ def output(definitions, tests, objects, states, rl_version):
         print(
             xml.object(
                 xml.version["Tag"],
-                xml.version["Scope"],
+                xml.version["Scope"].lower()+":",
                 obj["type"],
                 obj["id"],
                 obj["version"],
@@ -93,7 +93,7 @@ def output(definitions, tests, objects, states, rl_version):
         print(
             xml.state(
                 xml.version["Tag"],
-                xml.version["Scope"],
+                xml.version["Scope"].lower()+":",
                 state["type"],
                 state["id"],
                 state["version"],
@@ -126,7 +126,7 @@ def pipeline(rl_version, sa_type):
     definitions, tests, objects, states = ctrl.transform(advisories, rl_version, sa_type)
 
     # output to OVAL XML content
-    output(definitions, tests, objects, states, rl_version)
+    output(definitions, tests, objects, states, rl_version, sa_type)
 
 
 def main():

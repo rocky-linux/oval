@@ -20,7 +20,7 @@ copyright = 'Copyright ' + str( publication_date.year ) + ' Rocky Enterprise Sof
 version = {
     'Product' : "1",
     'Schema'  : "5.10",
-    'Scope'   : "oval:org.rockylinux.rlsa:",
+    'Scope'   : "oval:org.rockylinux.",
     'Tag'     : "red-def:"
 }
 

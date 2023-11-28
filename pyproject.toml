@@ -16,5 +16,5 @@ requests = "~2.27.1"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.scripts]
+[project.scripts]
 oval = "oval.oval:main"

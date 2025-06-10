@@ -159,9 +159,10 @@ def metadata( title, family, platforms, ref_id, source, references, description,
                '" impact="' + reference[ 'impact' ] + '" public="' + \
                reference[ 'public' ] + '">' + reference[ 'cve' ] + '</cve>\n'
 
-        bugs = bugs + \
-               '      <bugzilla href="' + reference[ 'bugref' ] + '" id="' + \
-               reference[ 'bugid' ] + '">' + reference[ 'bugdesc' ] + '</bugzilla>\n'
+        if 'bugref' in reference:
+            bugs = bugs + \
+                '      <bugzilla href="' + reference[ 'bugref' ] + '" id="' + \
+                reference[ 'bugid' ] + '">' + reference[ 'bugdesc' ] + '</bugzilla>\n'
 
     xml = xml + \
           cves + \

@@ -92,6 +92,18 @@ def references( cves, fixes, impact, public ) :
     references = [ ]
     for cve in cves :
         cve_id = cve[ 'name' ]
+        references.append(
+            { 
+                'id'      : cve_id, 
+                'url'     : cve[ 'sourceLink' ],
+                'source'  : cve[ 'sourceBy' ],
+                'cvss3'   : cve[ 'cvss3BaseScore' ] + cve[ 'cvss3ScoringVector' ],
+                'cwe'     : cve[ 'cwe' ],
+                'impact'  : impact,
+                'public'  : public,
+                'cve'     : cve_id
+            }
+        )
 
         # lookup bug for this cve (could be more efficient)
         for bug in bugs :
@@ -148,9 +160,10 @@ def definitions( advisories, rl_version ) :
         # create references
         refs = references( advisory[ 'cves' ], advisory[ 'fixes' ], severity.lower( ), issued.replace( '-', '' ) )
         for reference in refs :
-            id = reference[ 'bugdesc' ].split( ' ' )[ 0 ]
-            desc = reference[ 'bugdesc' ].replace( id, '' )
-            description = description + '*' + desc + '. (' + id + ')\n\n'
+            if 'bugdesc' in reference:
+                id = reference[ 'bugdesc' ].split( ' ' )[ 0 ]
+                desc = reference[ 'bugdesc' ].replace( id, '' )
+                description = description + '*' + desc + '. (' + id + ')\n\n'
 
         # create definition
         definitions.append( 

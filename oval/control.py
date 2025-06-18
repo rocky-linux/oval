@@ -39,7 +39,7 @@ def ingest( rl_version ) :
     """
 
     alist = []
-    page = 1
+    page = 0
     while True:
         product_filter = f"&filters.product=Rocky%20Linux%20{rl_version}"
         url = f"{BASEAPI}{BASEFILTER}{product_filter}&page={page}&limit={PER_RQ_LIMIT}"
